@@ -28,6 +28,11 @@ try {
         $is_liked = (bool)$stmt->fetch();
     }
 
+    // Count total likes
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE liked_id = ?");
+    $stmt->execute([$user_id]);
+    $total_likes = (int)$stmt->fetchColumn();
+
     // Fetch comments on this profile
     $stmt = $pdo->prepare("
         SELECT c.content, c.created_at, u.username 
@@ -42,25 +47,6 @@ try {
 } catch (Exception $e) {
     error_log("Profile view error: " . $e->getMessage());
     die("Ett fel uppstod vid visning av profilen.");
-}
-
-// Handle Like/Unlike
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_SESSION['user_id'])) {
-    try {
-        if ($_POST['action'] === 'like') {
-            $stmt = $pdo->prepare("INSERT IGNORE INTO likes (liker_id, liked_id) VALUES (?, ?)");
-            $stmt->execute([$_SESSION['user_id'], $user_id]);
-            header("Location: view_profile.php?id=" . (int)$user_id);
-            exit();
-        } elseif ($_POST['action'] === 'unlike') {
-            $stmt = $pdo->prepare("DELETE FROM likes WHERE liker_id = ? AND liked_id = ?");
-            $stmt->execute([$_SESSION['user_id'], $user_id]);
-            header("Location: view_profile.php?id=" . (int)$user_id);
-            exit();
-        }
-    } catch (Exception $e) {
-        error_log("Like action error: " . $e->getMessage());
-    }
 }
 ?>
 <!DOCTYPE html>
@@ -116,13 +102,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_
 
     <!-- Like Button (only for logged-in users, not self) -->
     <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != $target_user['id']): ?>
-        <form method="POST" style="margin: 1rem 0;">
-            <?php if ($is_liked): ?>
-                <button type="submit" name="action" value="unlike" class="book-btn" style="background:#666;">Gilla inte längre</button>
-            <?php else: ?>
-                <button type="submit" name="action" value="like" class="book-btn">Gilla denna profil</button>
-            <?php endif; ?>
-        </form>
+        <div style="margin: 1rem 0;">
+            <button id="like-btn" 
+                    data-action="<?= $is_liked ? 'unlike' : 'like' ?>"
+                    class="book-btn">
+                <?= $is_liked ? 'Gilla inte längre' : 'Gilla denna profil' ?>
+            </button>
+            <span id="like-count" style="margin-left: 0.5rem; color:#aaa;">
+                (<?= $total_likes ?>)
+            </span>
+        </div>
     <?php endif; ?>
 
     <!-- Comments Section -->
@@ -167,5 +156,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_
         <p>&copy; 2026 WildMatch</p>
     </div>
 </footer>
+
+<!-- Like/Unlike AJAX Integration -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const likeBtn = document.getElementById('like-btn');
+    if (likeBtn) {
+        likeBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const likedId = <?= (int)$target_user['id'] ?>;
+            const action = likeBtn.dataset.action;
+
+            try {
+                const res = await fetch('like.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ liked_id: likedId })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    if (data.action === 'liked') {
+                        likeBtn.textContent = 'Gilla inte längre';
+                        likeBtn.dataset.action = 'unlike';
+                    } else {
+                        likeBtn.textContent = 'Gilla denna profil';
+                        likeBtn.dataset.action = 'like';
+                    }
+                    document.getElementById('like-count').textContent = '(' + data.total_likes + ')';
+                } else {
+                    alert(data.message || 'Fel vid gillande');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Nätverksfel — försök igen.');
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

@@ -2,14 +2,18 @@
 session_start();
 require_once 'config.php';
 
-// Fetch all users (public info only)
+// Initial load: first 5 profiles
+$limit = 5;
+$offset = 0;
 try {
-    $stmt = $pdo->query("SELECT id, username, full_name, city, bio, created_at FROM users ORDER BY created_at DESC");
+    $stmt = $pdo->prepare("SELECT id, username, full_name, city, bio, created_at FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?");
+    $stmt->execute([$limit, $offset]);
     $users = $stmt->fetchAll();
 } catch (Exception $e) {
     error_log("Profile fetch error: " . $e->getMessage());
     $users = [];
 }
+$totalUsers = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="sv">
@@ -55,28 +59,35 @@ try {
 </section>
 
 <main class="container">
-    <h2>Alla profiler (<?= count($users) ?>)</h2>
-
-    <?php if (empty($users)): ?>
-        <p>Inga profiler ännu. <a href="register.php" style="color:#ff0000;">Skapa ett konto!</a></p>
-    <?php else: ?>
-        <div class="feature-grid">
-            <?php foreach ($users as $user): ?>
-            <div class="feature-card" style="text-align: left; padding: 1.2rem;">
-                <h3><?= htmlspecialchars($user['full_name']) ?></h3>
-                <p><strong>Användare:</strong> <?= htmlspecialchars($user['username']) ?></p>
-                <p><strong>Stad:</strong> <?= htmlspecialchars($user['city'] ?: 'Inte angivet') ?></p>
-                <p><strong>Medlem sedan:</strong> <?= date('j F Y', strtotime($user['created_at'])) ?></p>
-                <?php if (!empty($user['bio'])): ?>
-                    <p><em>"<?= htmlspecialchars($user['bio']) ?>"</em></p>
-                <?php endif; ?>
-                <a href="view_profile.php?id=<?= (int)$user['id'] ?>" class="book-btn" style="margin-top: 0.5rem; display: inline-block;">
-                    Visa profil
-                </a>
-            </div>
-            <?php endforeach; ?>
+    <h2>Alla profiler (<?= $totalUsers ?>)</h2>
+    <div id="profiles-container" class="feature-grid">
+        <?php foreach ($users as $user): ?>
+        <div class="feature-card" style="text-align: left; padding: 1.2rem;">
+            <h3><?= htmlspecialchars($user['full_name']) ?></h3>
+            <p><strong>Användare:</strong> <?= htmlspecialchars($user['username']) ?></p>
+            <p><strong>Stad:</strong> <?= htmlspecialchars($user['city'] ?: 'Inte angivet') ?></p>
+            <p><strong>Medlem sedan:</strong> <?= date('j F Y', strtotime($user['created_at'])) ?></p>
+            <?php if (!empty($user['bio'])): ?>
+                <p><em>"<?= htmlspecialchars($user['bio']) ?>"</em></p>
+            <?php endif; ?>
+            <a href="view_profile.php?id=<?= (int)$user['id'] ?>" class="book-btn" style="margin-top: 0.5rem; display: inline-block;">
+                Visa profil
+            </a>
         </div>
-    <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading" style="text-align: center; margin: 2rem 0; display: none;">
+        <p>Laddar fler profiler...</p>
+    </div>
+
+    <!-- Hidden state for JS -->
+    <div id="pagination-state" 
+         data-offset="<?= count($users) ?>" 
+         data-total="<?= $totalUsers ?>" 
+         data-limit="<?= $limit ?>">
+    </div>
 </main>
 
 <footer>
@@ -84,6 +95,44 @@ try {
         <p>&copy; 2026 WildMatch. Alla profiler är offentliga för visning.</p>
     </div>
 </footer>
+
+<script>
+let isLoading = false;
+
+function loadMoreProfiles() {
+    const state = document.getElementById('pagination-state');
+    const offset = parseInt(state.dataset.offset);
+    const total = parseInt(state.dataset.total);
+    const limit = parseInt(state.dataset.limit);
+
+    if (offset >= total || isLoading) return;
+
+    isLoading = true;
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`load_profiles.php?offset=${offset}&limit=${limit}`)
+        .then(response => response.text())
+        .then(html => {
+            if (html.trim()) {
+                document.getElementById('profiles-container').insertAdjacentHTML('beforeend', html);
+                state.dataset.offset = offset + limit;
+            }
+            document.getElementById('loading').style.display = 'none';
+            isLoading = false;
+        })
+        .catch(() => {
+            document.getElementById('loading').style.display = 'none';
+            isLoading = false;
+        });
+}
+
+// Trigger on scroll near bottom
+window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        loadMoreProfiles();
+    }
+});
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
