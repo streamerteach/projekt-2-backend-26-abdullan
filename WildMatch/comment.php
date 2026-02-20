@@ -31,7 +31,7 @@ if (strlen($content) > 500) {
 }
 
 try {
-    // Optional: prevent self-commenting (not required, but common)
+    // prevent self-commenting
     if ((int)$_SESSION['user_id'] === (int)$target_id) {
         $_SESSION['error'] = "Du kan inte kommentera din egen profil.";
         header("Location: view_profile.php?id=" . (int)$target_id);

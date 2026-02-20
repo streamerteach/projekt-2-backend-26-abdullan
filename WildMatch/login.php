@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'config.php';
 
 // Prevent already logged-in users from accessing login page
@@ -49,33 +50,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logga in – WildMatch</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <div class="header-container">
-        <div class="logo-text">WildMatch</div>
-        <nav><ul><li><a href="index.php">Tillbaka</a></li></ul></nav>
-    </div>
-</header>
-<main class="container">
-    <h1>Logga in</h1>
-
-    <?php if ($error): ?>
-        <p style="color: #f44336;"><?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
-
-    <form method="POST">
-        <div class="info-section">
-            <p><label>Användarnamn: <input type="text" name="username" required autofocus></label></p>
-            <p><label>Lösenord: <input type="password" name="password" required></label></p>
-            <button type="submit" class="book-btn">Logga in</button>
-            <p style="margin-top: 1rem;">
-                Ingen konto? <a href="register.php" style="color:#ff0000;">Registrera dig</a>
-            </p>
+    <header>
+        <div class="header-container">
+            <div class="logo-text">WildMatch</div>
+            <nav>
+                <ul>
+                    <li><a href="index.php">Tillbaka</a></li>
+                </ul>
+            </nav>
         </div>
-    </form>
-</main>
+    </header>
+    <main class="container">
+        <h1>Logga in</h1>
+
+        <?php if ($error): ?>
+        <p style="color: #f44336;">
+            <?= htmlspecialchars($error) ?>
+        </p>
+        <?php endif; ?>
+
+        <form method="POST">
+            <div class="info-section">
+                <p><label>Användarnamn: <input type="text" name="username" required autofocus></label></p>
+                <p><label>Lösenord: <input type="password" name="password" required></label></p>
+                <button type="submit" class="book-btn">Logga in</button>
+                <p style="margin-top: 1rem;">
+                    Ingen konto? <a href="register.php" style="color:#ff0000;">Registrera dig</a>
+                </p>
+            </div>
+        </form>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('nav ul');
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

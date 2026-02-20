@@ -9,9 +9,9 @@ if (basename($_SERVER['PHP_SELF']) === 'config.php') {
 
 // Database credentials (Arcada-specific)
 $host = 'localhost';
-$db   = 'abdullan';          // Your Arcada MySQL database name
-$user = 'abdullan';          // Your Arcada username
-$pass = '';                  // Leave empty unless you set a MySQL password
+$db   = 'abdullan'; // Your Arcada MySQL database name
+$user = 'abdullan'; // Your Arcada username
+$pass = '3B2m6gEr9n'; // Leave empty unless you set a MySQL password
 $charset = 'utf8mb4';
 
 // DSN and options

@@ -1,0 +1,269 @@
+/* STYLE & RESPONSIVE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #121212; /* Mörk bakgrundsfärg */
+    color: #f0f0f0; /* Ljust textfärg */
+    font-family: 'Open Sans', sans-serif; /* Modern, läsbar typsnittsfamilj */
+    line-height: 1.6; /* Radavstånd för bättre läsbarhet */
+}
+
+.container {
+    width: 90%; /* Tar upp 90% av skärmens bredd */
+    max-width: 1200px; /* Men aldrig bredare än 1200px */
+    margin: 0 auto; /* Centrera horisontellt */
+    padding: 2rem 0; /* Vertikal padding (överst och nederst) */
+}
+
+header {
+    background: #1a1a1a; /* Mörkare bakgrund för header */
+    padding: 1rem 0; /* Inre marginal */
+    position: sticky; /* Fast vid toppen när man scrollar */
+    top: 0; /* Fast vid toppen av fönstret */
+    z-index: 100; /* Placeras ovanför annat innehåll */
+    border-bottom: 2px solid #ff0000; /* Röd linje under header */
+}
+
+.header-container {
+    display: flex; /* Flexbox för att justera innehåll */
+    justify-content: space-between; /* Mellanrum mellan logo och meny */
+    align-items: center; /* Vertikalt centrerat */
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative; /* Nödvändigt för att positionera mobilmenyn korrekt */
+}
+
+.logo-text {
+    font-family: 'UnifrakturMaguntia', cursive; /* Gotiskt/medeltida typsnitt */
+    font-size: 2.8rem; /* Stor text */
+    color: #ff0000; /* Röd färg */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Skugga för djupverkan */
+}
+
+.fraktur {
+    font-family: 'UnifrakturMaguntia', cursive;
+    color: white;
+}
+
+nav ul {
+    list-style: none; /* Ta bort punkter från listan */
+    display: flex; /* Visa länkar horisontellt */
+    gap: 1.5rem; /* Avstånd mellan länkarna */
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    color: #f0f0f0; /* Vit text */
+    text-decoration: none; /* Ingen understrykning */
+    padding: 0.5rem 1rem; /* Inre marginal runt texten */
+    border-radius: 4px; /* Rundade hörn */
+    transition: background 0.3s; /* Mjuk övergång vid hover */
+}
+
+nav a.active {
+    color: #ff0000 !important;
+}
+
+nav a:hover {
+    background: #333; /* Mörkgrå bakgrund vid muspekare */
+}
+
+.hamburger {
+    display: none; /* Döljd som standard */
+    flex-direction: column; /* Stapla strecken vertikalt */
+    cursor: pointer; /* Visa pekhand vid hover */
+}
+
+.hamburger span {
+    width: 25px; /* Bredd */
+    height: 3px; /* Tjocklek */
+    background: #ff0000; /* Röd färg */
+    margin: 3px 0; /* Mellanrum mellan strecken */
+}
+
+.info-section {
+    background: #1e1e1e; /* Mörk grå bakgrund */
+    padding: 1.5rem; /* Inre marginal */
+    margin: 1.5rem 0; /* Yttre marginal (ovanför och under) */
+    border: 1px solid #444; /* Tunna ramar */
+    border-radius: 8px; /* Rundade hörn */
+}
+.info-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.info-section li {
+    position: relative;
+    padding-left: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.info-section li::before {
+    content: "•";
+    color: #ff0000;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.hero {
+    background: #1a1a1a;
+    text-align: center;
+    padding: 4rem 1rem;
+    margin: 2rem 0;
+    border: 1px solid #ff0000; /* Röd kant */
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsivt rutnät */
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.feature-card {
+    background: #252525;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid #555;
+}
+
+.book-btn {
+    background: #ff0000; /* Röd bakgrund */
+    color: white; /* Vit text */
+    border: none; /* Ingen kantlinje */
+    padding: 0.75rem 1.5rem; /* Inre marginal */
+    font-size: 1rem; /* Textstorlek */
+    border-radius: 4px; /* Rundade hörn */
+    cursor: pointer; /* Visa pekhand */
+    text-decoration: none; /* Ingen understrykning (för <a>-taggar) */
+    display: inline-block; /* Beteende som block-element men inline */
+    margin-top: 1rem; /* Marginal ovanför knappen */
+}
+
+.book-btn:hover {
+    background: #cc0000; /* Mörkare röd vid hover */
+}
+
+.current-profile {
+    text-align: center; /* Centrera innehållet horisontellt */
+    margin-bottom: 1.5rem; /* Marginal under profilkortet */
+}
+.current-profile img {
+    border-radius: 50%; /* Gör bilden cirkulär */
+    border: 3px solid #ff0000; /* Tjock röd kant runt bilden */
+    box-shadow: 0 0 10px rgba(255,0,0,0.5); /* Röd skugga för djupverkan */
+}
+.current-profile p {
+    font-size: 0.9rem; /* Mindre textstorlek för datum */
+    margin-top: 0.5rem; /* Marginal ovanför texten */
+    color: #aaa; /* Ljust grå textfärg */
+}
+
+.toggle-btn {
+    background: #333; /* Mörkgrå bakgrund */
+    color: #ff0000; /* Röd textfärg */
+    border: 1px solid #ff0000; /* Röd kantlinje */
+    padding: 0.5rem 1rem; /* Inre marginal */
+    border-radius: 4px; /* Lätt rundade hörn */
+    cursor: pointer; /* Visa pekhand vid hover */
+    font-weight: bold; /* Fet text */
+    transition: background 0.2s; /* Mjuk övergång vid färgändring */
+    display: block; /* Block-element */
+    margin: 1.5rem auto 0; /* Centrera horisontellt med marginal ovanför */
+    display: flex; /* Använd flexbox för innehåll */
+    align-items: center; /* Vertikalt centrerat innehåll */
+    gap: 0.5rem; /* Avstånd mellan ikon och text */
+}
+.toggle-btn:hover {
+    background: #444; /* Mörkare bakgrund vid muspekare */
+}
+
+.arrow {
+    color: #ff0000; /* Röd färg på triangeln */
+    font-size: 1.2em; /* Större storlek än omgivande text */
+}
+
+.old-pictures {
+    display: none; /* Döljd som standard */
+    margin-top: 1.5rem; /* Marginal ovanför sektionen */
+    padding-top: 1rem; /* Inre marginal ovanför innehållet */
+    border-top: 1px solid #444; /* Tunn grå linje ovanför */
+}
+.old-pictures h3 {
+    margin-bottom: 1rem; /* Marginal under rubriken */
+    color: #ff0000; /* Röd rubrik */
+    text-align: center; /* Centrerad text */
+}
+.old-images-grid {
+    display: flex; /* Flexbox-layout */
+    flex-wrap: wrap; /* Tillåt radbrytning vid små skärmar */
+    gap: 1rem; /* Avstånd mellan bilderna */
+    justify-content: center; /* Centrera rutnätet horisontellt */
+}
+.old-image-item {
+    text-align: center; /* Centrera text under bilden */
+    max-width: 120px; /* Maxbredd för varje bild */
+}
+.old-image-item img {
+    border-radius: 8px; /* Mjukt rundade hörn */
+    border: 1px solid #555; /* Tunna grå kanter */
+    width: 100px; /* Fast bredd */
+    height: auto; /* Behåll proportioner */
+}
+.old-image-item p {
+    font-size: 0.75rem; /* Mycket liten text för datum */
+    margin: 0.3rem 0; /* Minimal vertikal marginal */
+    color: #bbb; /* Ljust grå textfärg */
+}
+
+footer {
+    background: #1a1a1a; /* Mörk bakgrund */
+    color: #aaa; /* Grå text */
+    text-align: center; /* Centrerad text */
+    padding: 1.5rem 0; /* Vertikal padding */
+    margin-top: 3rem; /* Marginal ovanför */
+    border-top: 1px solid #333; /* Tunn grå linje ovanför */
+    font-size: 0.95rem; /* Liten text */
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex; /* Visa hamburgerikon på mobiler */
+    }
+
+    nav ul {
+        display: none; /* Dölj menyn som standard */
+        position: absolute; /* Placera menyn absolut under header */
+        top: 70px; /* Just under header */
+        left: 0;
+        width: 100%; /* Full bredd */
+        background: #1a1a1a; /* Mörk bakgrund */
+        flex-direction: column; /* Visa länkar vertikalt */
+        padding: 1rem 0;
+        margin: 0;
+    }
+
+    nav ul.active {
+        display: flex; /* Visa menyn när klassen "active" läggs till */
+    }
+
+    .header-container {
+        flex-wrap: wrap; /* Låt innehåll gå till nästa rad om det behövs */
+    }
+
+    .hero {
+        padding: 2rem 1rem; /* Mindre padding på mobiler */
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr; /* En kolumn på mobiler */
+    }
+}
