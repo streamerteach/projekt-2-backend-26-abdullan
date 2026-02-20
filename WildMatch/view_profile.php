@@ -51,6 +51,7 @@ $comments = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,6 +61,7 @@ $comments = $stmt->fetchAll();
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -174,6 +176,15 @@ $comments = $stmt->fetchAll();
             <a href="delete_profile.php" class="book-btn" style="background:#c00;">Radera profil</a>
         </section>
         <?php endif; ?>
+
+        <!-- Admin Tools  -->
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+        <section class="info-section">
+            <h2>Admin-verktyg</h2>
+            <a href="admin_delete.php?id=<?= (int)$target_user['id'] ?>" class="book-btn" style="background:#c00;">
+                Ta bort profil</a>
+        </section>
+        <?php endif; ?>
     </main>
 
     <footer>
@@ -190,7 +201,7 @@ $comments = $stmt->fetchAll();
                 likeBtn.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const likedId = <?= (int)$target_user['id'] ?>;
-                    
+
                     const formData = new FormData();
                     formData.append('liked_id', likedId);
 
@@ -231,4 +242,5 @@ $comments = $stmt->fetchAll();
         });
     </script>
 </body>
+
 </html>
