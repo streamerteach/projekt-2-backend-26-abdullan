@@ -68,6 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header>
         <div class="header-container">
             <div class="logo-text">WildMatch</div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <nav>
                 <ul>
                     <li><a href="index.php">Tillbaka</a></li>

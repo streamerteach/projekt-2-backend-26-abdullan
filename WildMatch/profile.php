@@ -38,6 +38,7 @@ try {
                 <ul>
                     <li><a href="index.php">Hem</a></li>
                     <li><a href="profile.php" class="active">Min profil</a></li>
+                    <li><a href="rapport.php">Rapport</a></li>
                     <li><a href="logout.php">Logga ut</a></li>
                 </ul>
             </nav>

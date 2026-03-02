@@ -113,6 +113,38 @@ nav a:hover {
     font-weight: bold;
 }
 
+.reflection-section {
+    margin: 2rem 0;
+    line-height: 1.6;
+}
+
+.reflection-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.5rem 0;
+}
+
+.reflection-section li {
+    position: relative;
+    padding-left: 1.8rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.reflection-section li::before {
+    content: "•";
+    color: #ff0000;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+h2 {
+    margin-top: 1.5rem;
+    color: #ff0000;
+}
+
 .hero {
     background: #1a1a1a;
     text-align: center;

@@ -66,6 +66,7 @@ try {
                     <li><a href="register.php">Registrera</a></li>
                     <?php else: ?>
                     <li><a href="profile.php">Min profil</a></li>
+                    <li><a href="rapport.php">Rapport</a></li>
                     <li><a href="logout.php">Logga ut</a></li>
                     <?php endif; ?>
                 </ul>
