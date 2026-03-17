@@ -61,7 +61,7 @@ try {
                 <?php echo htmlspecialchars($user['city'] ?: 'Inte angivet') ?>
             </p>
             <p><strong>Årslön:</strong>
-                <?php echo $user['salary'] ? number_format($user['salary'], 0, ',', ' ') . ' kr' : 'Inte angivet' ?>
+                <?php echo $user['salary'] ? number_format($user['salary'], 0, ',', ' ') . ' €' : 'Inte angivet' ?>
             </p>
             <p><strong>Preferens:</strong>
                 <?php echo htmlspecialchars($user['preference']) ?>
@@ -79,18 +79,6 @@ try {
             <a href="edit_profile.php" class="book-btn">Redigera profil</a>
             <a href="delete_profile.php" class="book-btn" style="background:#c00;">Radera profil</a>
         </section>
-
-        <hr>
-        <h2>Ladda upp profilbild</h2>
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="fileToUpload" accept=".jpg,.jpeg,.png" required>
-            <button type="submit" class="book-btn">Ladda upp</button>
-        </form>
-        <?php
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && ! empty($_FILES['fileToUpload']['name'])) {
-                echo "<p style='color:#4CAF50;'>Bilduppladdning är inte aktiverad i Projekt 2 — men du kan lägga till det senare.</p>";
-            }
-        ?>
     </main>
 
     <footer>

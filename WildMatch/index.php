@@ -127,7 +127,7 @@ try {
                 </p>
                 <?php if (isset($_SESSION['user_id']) && $user['salary']): ?>
                 <p><strong>Årslön:</strong>
-                    <?= number_format($user['salary'], 0, ',', ' ') ?> kr
+                    <?= number_format($user['salary'], 0, ',', ' ') ?> €
                 </p>
                 <?php endif; ?>
                 <p><strong>Medlem sedan:</strong>
